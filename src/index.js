@@ -1,11 +1,15 @@
-const express = require('express');
-const rotas = require('./routes');
+const Koa = require('koa')
+const bodyParser = require('koa-bodyparser')
 
-const app = express();
+const router = require('./routes')
+const config = require('../config')
 
-app.use(express.json());
-app.use(rotas);
+const app = new Koa()
 
-app.listen(7070, () =>{
-    console.log('Rodando na porta 7070');
-})
+app.use(bodyParser())
+app.use(router.routes())
+
+const port = config.server.port 
+
+app.listen(port)
+  .on('listening', () => console.log(`Listening on port ${port}`))
